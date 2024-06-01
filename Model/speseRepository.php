@@ -6,7 +6,18 @@ use \PDO;
 
 
 class speseRepository
+{   public static function deletePurchase($id): void
 {
+    $pdo = Connection::getInstance();
+    $sql = 'DELETE FROM spese2.note WHERE id = :id;';
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        'id' => $id
+    ]);
+
+}
+
     public static function addPurchase($id_utente, $id_descrizione, $importo, $file, $orario, $data) {
         $pdo = Connection::getInstance();
         $sql = 'INSERT INTO note (id_descrizione, id_utente, importo, fotoScontrino, orario, data) 

@@ -39,7 +39,7 @@ class UserRepository{
     public static function getSpesefiltrate($id, $filtro_data, $causa_filtro, $order_by)
     {
         $pdo = Connection::getInstance();
-        $sql = 'SELECT tipologia, data, orario, fotoScontrino, importo
+        $sql = 'SELECT note.id ,tipologia, data, orario, fotoScontrino, importo
         FROM descrizione, note
         WHERE note.id_descrizione = descrizione.id
           AND note.id_utente = :id
@@ -89,7 +89,7 @@ class UserRepository{
 
     public static function checkUserExists(string $username): ?array {
         $pdo = Connection::getInstance();
-        $sql = 'SELECT * FROM spese.utente WHERE username=:username';
+        $sql = 'SELECT * FROM spese2.utente WHERE username=:username';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             'username' => $username
@@ -103,16 +103,52 @@ class UserRepository{
         // Se esiste un utente con lo stesso nome utente, restituisci i dati dell'utente
         return $stmt->fetch();
     }
-    public static function addUser(string $username, string $password)
+    public static function checkMatricolaExists(string $matricola): ?array {
+        $pdo = Connection::getInstance();
+        $sql = 'SELECT * FROM spese2.utente WHERE matricola=:matricola';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            'matricola' => $matricola
+        ]);
+
+        // Se non esiste un utente con lo stesso nome utente, restituisci null
+        if ($stmt->rowCount() == 0) {
+            return null;
+        }
+
+        // Se esiste un utente con lo stesso nome utente, restituisci i dati dell'utente
+        return $stmt->fetch();
+    }
+    public static function checkEmailExists(string $email): ?array {
+        $pdo = Connection::getInstance();
+        $sql = 'SELECT * FROM spese2.utente WHERE email=:email';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            'email' => $email
+        ]);
+
+        // Se non esiste un utente con lo stesso nome utente, restituisci null
+        if ($stmt->rowCount() == 0) {
+            return null;
+        }
+
+        // Se esiste un utente con lo stesso nome utente, restituisci i dati dell'utente
+        return $stmt->fetch();
+    }
+    public static function addUser(string $username, string $password , string $nome, string $cognome , string $email , int $matricola)
     {
         $pdo = Connection::getInstance();
         $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $sql = 'INSERT INTO spese.utente (username, password) 
-            VALUES (:username , :password)';
+        $sql = 'INSERT INTO spese2.utente (username, password ,nome ,cognome, matricola,email) 
+            VALUES (:username , :password , :nome , :cognome , :matricola , :email)';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
                 'username' => $username,
-                'password' => $encryptedPassword
+                'password' => $encryptedPassword,
+                'nome' => $nome,
+                'cognome' =>$cognome,
+                'email' =>$email ,
+                'matricola' =>$matricola
             ]
         );
     }
@@ -125,7 +161,7 @@ class UserRepository{
     public static function getSpeseAdmin($filtro_data, $causa_filtro, $order_by, $utente)
     {
         $pdo = Connection::getInstance();
-        $sql = 'SELECT tipologia, note.data, orario, fotoScontrino, importo, username
+        $sql = 'SELECT note.id ,tipologia, note.data, orario, fotoScontrino, importo, username
             FROM descrizione
             JOIN note ON note.id_descrizione = descrizione.id
             JOIN utente ON utente.id = note.id_utente
@@ -187,6 +223,13 @@ class UserRepository{
     {
         $pdo = Connection::getInstance();
         $sql = 'SELECT DISTINCT username FROM utente';
+        $stmt = $pdo->query($sql);
+        return $stmt->fetchAll();
+    }
+    public static function getUsers()
+    {
+        $pdo = Connection::getInstance();
+        $sql = 'SELECT * FROM spese2.utente order by matricola';
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll();
     }

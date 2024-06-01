@@ -44,6 +44,7 @@
             left: 50%;
             transform: translate(-50%, -70%);
         }
+
     </style>
 
 </head>

@@ -1,7 +1,7 @@
 <?php
 
 require_once "vendor/autoload.php";
-require_once "conf/config.example.php";
+require_once "conf/config.php";
 
 use League\Plates\Engine;
 use Util\Authenticator;
@@ -143,8 +143,13 @@ if (isset($_GET["action"])) {
 
         ]);
         exit(0);
-    }
 
+    }
+    if($_GET["action"] == 'delete'){
+        $id_spesa = $_GET["id"];
+        Model\speseRepository::deletePurchase($id_spesa);
+        header("Location: index.php");
+    }
     if ($_GET["action"] == "logout") {
         Authenticator::logout();
         $templateData = [
@@ -164,7 +169,7 @@ if (isset($_GET["action"])) {
 
 
 if ($user['username']=='admin'){
-
+$users= Model\UserRepository::getUsers();
 //parametri di default
     $filtro_data = "tutte";
     $causa_filtro = "";
@@ -196,6 +201,7 @@ if ($user['username']=='admin'){
             $causa_filtro = "";
             $order_by = "data_piu_recente";
         }
+
     }
 
     if (isset($_POST["filtro_admin"])) {
@@ -224,6 +230,7 @@ if ($user['username']=='admin'){
             $ordine_filtro,
             $utenti
         );
+
         $i = 0;
         foreach ($spese as $row) {
             if (!empty($row["fotoScontrino"])) {
@@ -240,23 +247,39 @@ if ($user['username']=='admin'){
             echo $template->render('login');
             exit(0);
         }
+        else if($_GET["action"] == 'delete'){
+            $id_spesa = $_GET["id"];
+            Model\speseRepository::deletePurchase($id_spesa);
+            header("Location: index.php");
+        }
     }
 
     if (isset($_POST['NewUsername'])){
         $username = $_POST['NewUsername'];
         $password = $_POST['NewPassword'];
-        if(Model\UserRepository::checkUserExists($username)==null){
-            Model\UserRepository::addUser($username,$password);
+        $email =$_POST['email'];
+        $nome =$_POST['nome'];
+        $cognome =$_POST['cognome'];
+        $matricola=$_POST['matricola'];
+
+        if(Model\UserRepository::checkUserExists($username)==null && Model\UserRepository::checkMatricolaExists($matricola)==null && Model\UserRepository::checkEmailExists($email)==null){
+            Model\UserRepository::addUser($username,$password,$nome,$cognome,$email,$matricola);
             echo $template->render('controlPanel' , [
                 'successful' => true,
-                'tutti_utenti' => $tutti_utenti
+                'tutti_utenti' => $tutti_utenti,
+                'users' =>$users,
+                'spese' => $spese
 
             ]);
         }
         else {
             echo $template->render('controlPanel' , [
                 'successful' => false,
-                'tutti_utenti' => $tutti_utenti
+                'tutti_utenti' => $tutti_utenti,
+                'users' =>$users,
+                'spese' => $spese
+
+
 
             ]);
         }
@@ -267,7 +290,8 @@ if ($user['username']=='admin'){
     echo $template->render('controlPanel' , [
         'spese' => $spese,
         'cause' => $cause,
-        'tutti_utenti' => $tutti_utenti
+        'tutti_utenti' => $tutti_utenti,
+        'users' =>$users
     ]);
     exit(0);
 }

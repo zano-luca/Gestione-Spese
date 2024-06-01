@@ -76,6 +76,22 @@
             margin-left: 30px;
             margin-right: 130px;
         }
+        .delete-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+        .delete-button svg {
+            fill: #000;
+            width: 100%;
+            height: 100%;
+        }
+        .delete-button:hover svg {
+            fill: red;
+        }
     </style>
 </head>
 <body>
@@ -183,7 +199,7 @@
             <th>File</th>
             <th>Data</th>
             <th>Ora</th>
-            <th></th>
+            <th>Elimina</th>
         </tr>
         </thead>
         <tbody>
@@ -202,7 +218,14 @@
             <?php endif; ?>
             <td><?= $spesa['data'] ?></td>
             <td><?= $spesa['orario'] ?></td>
-            <td><a> Visualizza dettagli</a> </td>
+            <td><a href="index.php?action=delete&id=<?= $spesa['id'] ?>" class="delete-link">
+                    <button class="delete-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.3 5.71a1 1 0 0 0-1.42 0L12 10.59 7.12 5.7A1 1 0 0 0 5.7 7.12l4.88 4.88-4.88 4.88a1 1 0 0 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.41-1.41L13.41 12l4.88-4.88a1 1 0 0 0 0-1.41z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
         </tr>
         <?php
                   $contatore++;

@@ -8,18 +8,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative;
+            scroll-behavior: smooth;
         }
         td, th{
             font-size: 15px;
         }
         #form {
             padding: 20px;
-            height: 380px;
+            height: 670px;
             width: 400px;
             margin: auto;
             border: black 4px solid;
@@ -71,9 +76,25 @@
             margin-bottom: 60px;
             text-align: center;
         }
+        .delete-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+        .delete-button svg {
+            fill: #000;
+            width: 100%;
+            height: 100%;
+        }
+        .delete-button:hover svg {
+            fill: red;
+        }
     </style>
 </head>
-<body>
+<body class="text-xl">
 <div class="navbar">
     <a href="index.php?action=logout">
         <div class="float-right">
@@ -84,6 +105,10 @@
     </a>
     <h2 style="margin: 0 auto">Benvenuto admin</h2>
 </div>
+<div class="flex justify-center items-center space-x-3 pb-8 ">
+    <a href="#utenti"> <btn class=" btn btn-primary text-xl ">utenti</btn> </a>
+    <a href="#tabella-spese"> <btn class="btn btn-primary text-xl">spese</btn> </a>
+</div>
 
 <form class="form" id="form" action="index.php" method="post" onsubmit="return validateForm()">
 
@@ -91,21 +116,48 @@
 
     <label class="input input-bordered flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
-        <input type="text" class="grow" id="username" placeholder="Nome utente" name="NewUsername" required/>
+        <input type="text" class="grow" id="username" placeholder="username" name="NewUsername" required/>
+    </label>
+
+    <br>
+
+    <label class="input input-bordered flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
+        <input type="email" class="grow" id="email" placeholder="E-mail" name="email" required/>
+    </label>
+
+    <br>
+
+    <label class="input input-bordered flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
+        <input type="text" class="grow" id="nome" placeholder="nome" name="nome" required/>
+    </label>
+    <br>
+
+    <label class="input input-bordered flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
+        <input type="text" class="grow" id="cognome" placeholder="cognome" name="cognome" required/>
+    </label>
+
+    <br>
+
+    <label class="input input-bordered flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" /></svg>
+        <input type="number" min="0" class="grow" id="matricola" placeholder="id matricola" name="matricola" required/>
     </label>
 
     <br>
 
     <label class="input input-bordered flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
-        <input type="password" class="grow" id="password" placeholder="Password" name="NewPassword" required/>
+        <input type="password" class="grow" id="password" placeholder="password" name="NewPassword" required/>
     </label>
 
     <br>
 
     <label class="input input-bordered flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
-        <input type="password" class="grow" id="confirm_password" placeholder="Conferma Password" name="confirm_password" required/>
+        <input type="password" class="grow" id="confirm_password" placeholder="conferma Password" name="confirm_password" required/>
     </label>
 
     <br>
@@ -116,22 +168,43 @@
 
 </form>
 
-
-
-
-
-<br>
-<br>
 <?php if (isset($successful) && $successful): ?>
 <div class="successful-message" style="display:block" id="successful">Utente creato</div>
 <?php elseif (isset($successful) && !$successful): ?>
-<div class="error-message" style="display:block" id="error">Utente già esistente</div>
+<div class="error-message" style="display:block" id="error">Username, email o matricola già esistenti</div>
 <?php endif; ?>
 <div class="error-message2" id="password-error">Le password non coincidono</div>
 
 <br>
 <br><br>
-
+<div>
+    <label id="utenti" style="margin-top: 50px" class="label">Visualizza gli utenti:</label>
+    <table class="table">
+        <thead>
+        <tr class="bg-base-200">
+            <th>Matricola</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Nome</th>
+            <th>Cognome</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($users as $user): ?>
+        <tr>
+            <td><?php echo $user['matricola']; ?></td>
+            <td><?php echo $user['username']; ?></td>
+            <td><?php echo $user['email']; ?></td>
+            <td><?php echo $user['nome']; ?></td>
+            <td><?php echo $user['cognome']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<br>
 
 <div class="align" style="display: flex; align-items: center;">
     <form class="form" action="index.php?action=filtri" method="post" style="display: inline-block;">
@@ -183,12 +256,9 @@
         <input class="btn btn-primary" type="submit" value="Reset" style="flex-grow: 0; margin-left: 10px;">
     </form>
 </div>
-
-
-
 <div>
     <label style="margin-top: 50px" class="label">Visualizza tutte le spese:</label>
-    <table class="table">
+    <table id="tabella-spese" class="table">
         <thead>
         <tr class="bg-base-200">
             <th>N</th>
@@ -198,7 +268,7 @@
             <th>File</th>
             <th>Data</th>
             <th>Ora</th>
-            <th></th>
+            <th>Elimina</th>
         </tr>
         </thead>
         <tbody>
@@ -218,7 +288,14 @@
             <?php endif; ?>
             <td><?= $spesa['data'] ?></td>
             <td><?= $spesa['orario'] ?></td>
-            <td><a> Visualizza dettagli</a> </td>
+            <td><a href="index.php?action=delete&id=<?= $spesa['id'] ?>" class="delete-link">
+                    <button class="delete-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.3 5.71a1 1 0 0 0-1.42 0L12 10.59 7.12 5.7A1 1 0 0 0 5.7 7.12l4.88 4.88-4.88 4.88a1 1 0 0 0 1.41 1.41L12 13.41l4.88 4.88a1 1 0 0 0 1.41-1.41L13.41 12l4.88-4.88a1 1 0 0 0 0-1.41z"/>
+                        </svg>
+                    </button>
+                </a>
+            </td>
         </tr>
         <?php
                   $contatore++;
@@ -229,7 +306,6 @@
 </div>
 
 <br><br><br><br>
-
 
 <script>
     function validateForm() {
